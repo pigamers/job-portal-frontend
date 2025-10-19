@@ -200,5 +200,3 @@ For support and questions:
 - Check the documentation
 
 ---
-
-**Built with ❤️ by the CyberMinds Team**
