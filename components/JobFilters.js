@@ -36,17 +36,15 @@ export default function JobFilters({
 
   return (
     <Paper
-      p="md"
-      radius="md"
+      p="lg"
       style={{
-        width: "100%",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-        border: "none",
+        borderBottom: "2px solid #E9ECEF",
+        marginTop: "20px"
       }}
     >
       <Group
         spacing={{ base: "lg", sm: "md" }}
-        align="flex-start"
+        align="center"
         style={{
           flexDirection: { base: "column", md: "row" },
           gap: "20px",
@@ -54,13 +52,16 @@ export default function JobFilters({
       >
         <TextInput
           styles={inputStyles}
+          size="lg"
           style={{ flex: 1, width: "100%" }}
           placeholder="Search by Job Title"
           value={searchTitle}
           onChange={(e) => setSearchTitle(e.currentTarget.value)}
-          leftSection={<Search size={18} />}
+          leftSection={<img src="/searchicon.png" width={18} height={18} alt="Search" />}
           leftSectionWidth={40}
         />
+
+        <div style={{ width: "1px", height: "40px", backgroundColor: "#E9ECEF", alignSelf: "center" }} />
 
         <Select
           styles={{
@@ -72,6 +73,7 @@ export default function JobFilters({
               },
             },
           }}
+          size="lg"
           style={{ flex: 1, width: "100%" }}
           placeholder="Preferred Location"
           value={location}
@@ -79,21 +81,26 @@ export default function JobFilters({
           data={locations}
           clearable
           searchable
-          leftSection={<MapPin size={18} />}
+          leftSection={<img src="/locicon.png" width={18} height={22} alt="Location" />}
           leftSectionWidth={40}
         />
 
+        <div style={{ width: "1px", height: "40px", backgroundColor: "#E9ECEF", alignSelf: "center" }} />
+
         <Select
           styles={inputStyles}
+          size="lg"
           style={{ flex: 1, width: "100%" }}
           placeholder="Select Job Type"
           data={["Full-time", "Part-time", "Contract", "Internship", "Remote"]}
           value={jobType}
           onChange={setJobType}
           clearable
-          leftSection={<Briefcase size={18} />}
+          leftSection={<img src="/jobtypeicon.png" width={22} height={18} alt="Job Type" />}
           leftSectionWidth={40}
         />
+
+        <div style={{ width: "1px", height: "40px", backgroundColor: "#E9ECEF", alignSelf: "center" }} />
 
         <div style={{ flex: 1, width: "100%" }}>
           <div
@@ -105,28 +112,31 @@ export default function JobFilters({
               fontWeight: "500",
             }}
           >
-            <span>Salary Per Month</span>
+            <span style={{
+              fontWeight: "bold"
+            }}>Salary Per Month</span>
             <span>
               ₹{salaryRange[0]}K - ₹{salaryRange[1]}K
             </span>
           </div>
           <RangeSlider
-            min={0}
-            max={50}
-            step={1}
+            min={50}
+            max={150}
+            step={10}
             value={salaryRange}
             onChange={setSalaryRange}
-            marks={[{ value: 0 }, { value: 50 }]}
             styles={{
-              track: { backgroundColor: "#E9ECEF" },
-              bar: { backgroundColor: "#000" },
+              track: { backgroundColor: "#E9ECEF", height: "2px" },
+              bar: { backgroundColor: "#000", height: "2px" },
               thumb: {
                 backgroundColor: "#fff",
                 borderColor: "#000",
                 borderWidth: "4px",
                 borderStyle: "solid",
               },
-              mark: { backgroundColor: "#000" },
+              mark: { backgroundColor: "#000",
+                marginBottom: "10px"
+               },
               markLabel: { color: "#000" },
               label: { display: "none" },
             }}

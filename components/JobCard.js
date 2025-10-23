@@ -1,5 +1,5 @@
 import { Card, Text, Badge, Button, Group, Image } from "@mantine/core";
-import { Clock, Building2, Banknote, Building } from "lucide-react";
+import { Building } from "lucide-react";
 
 const JobCard = ({ job }) => {
   const getCompanyLogo = (companyName) => {
@@ -40,21 +40,21 @@ const JobCard = ({ job }) => {
     const diffTime = Math.abs(today - posted);
     const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
 
-    if (diffHours < 1) return "Less than an hour ago";
-    if (diffHours === 1) return "1 hour ago";
-    if (diffHours < 24) return `${diffHours} hours ago`;
+    if (diffHours < 1) return "<1h Ago";
+    if (diffHours === 1) return "1h Ago";
+    if (diffHours < 24) return `${diffHours}h Ago`;
 
     const diffDays = Math.floor(diffHours / 24);
-    if (diffDays === 1) return "Yesterday";
-    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays === 1) return "1d Ago";
+    if (diffDays < 7) return `${diffDays}d Ago`;
 
     const diffWeeks = Math.floor(diffDays / 7);
-    if (diffWeeks === 1) return "1 week ago";
-    if (diffWeeks < 4) return `${diffWeeks} weeks ago`;
+    if (diffWeeks === 1) return "1w Ago";
+    if (diffWeeks < 4) return `${diffWeeks}w Ago`;
 
     const diffMonths = Math.floor(diffDays / 30);
-    if (diffMonths === 1) return "1 month ago";
-    return `${diffMonths} months ago`;
+    if (diffMonths === 1) return "1m Ago";
+    return `${diffMonths}m Ago`;
   };
 
   const getExperienceLevel = (salaryRange) => {
@@ -74,11 +74,12 @@ const JobCard = ({ job }) => {
     <Card
       shadow="sm"
       padding="lg"
-      radius="md"
       withBorder
       style={{ 
-        minWidth: 200, 
-        height: "400px", 
+        width: "316px",
+        height: "360px",
+        borderRadius: "12px",
+        opacity: 1,
         display: "flex", 
         flexDirection: "column" 
       }}
@@ -102,11 +103,18 @@ const JobCard = ({ job }) => {
           variant="filled"
           styles={{
             root: {
-              marginLeft: "auto",
+              width: "75px",
+              height: "33px",
+              position: "absolute",
+              top: "16px",
+              left: "222px",
               backgroundColor: "#B0D9FF",
               color: "#000000",
               fontWeight: "700",
+              borderRadius: "10px",
               padding: "7px 10px",
+              opacity: 1,
+              textTransform: "none",
             }
           }}
         >
@@ -114,27 +122,37 @@ const JobCard = ({ job }) => {
         </Badge>
       </Group>
 
-      <Text size="xl" fw={600} mt="sm" style={{ color: "#494747" }}>
+      <Text 
+        mt="sm" 
+        style={{ 
+          fontFamily: "Satoshi Variable",
+          fontWeight: 700,
+          fontSize: "20px",
+          lineHeight: "100%",
+          letterSpacing: "0%",
+          color: "black" 
+        }}
+      >
         {job.title}
       </Text>
 
       <Group spacing="lg" mt="sm" mb="md">
         <Group spacing={6} style={{ gap: "5px" }}>
-          <Image src="/explogo.png" width={14} height={14} alt="Experience" />
+          <Image src="/explogo.png" width={16} height={16} alt="Experience" />
           <Text size="sm" c="dimmed">
             {getExperienceLevel(job.salaryRange)}
           </Text>
         </Group>
 
         <Group spacing={6} style={{ gap: "5px" }}>
-          <Image src="/jobtypelogo.png" width={14} height={14} alt="Job type" />
+          <Image src="/jobtypelogo.png" width={16} height={16} alt="Job type" />
           <Text size="sm" c="dimmed">
             {job.jobType}
           </Text>
         </Group>
 
         <Group spacing={6} style={{ gap: "5px" }}>
-          <Image src="/lpalogo.png" width={14} height={14} alt="Salary" />
+          <Image src="/lpalogo.png" width={16} height={16} alt="Salary" />
           <Text size="sm" c="dimmed">
             {(() => {
               const numbers = job.salaryRange?.match(/\d+/g) || [];
@@ -150,21 +168,22 @@ const JobCard = ({ job }) => {
       </Group>
 
       <div style={{ flex: 1, overflow: "hidden", marginTop: "8px" }}>
-        {/* All content as bullet points */}
         {[
-          ...(job.description ? job.description.split(".").filter(Boolean) : []),
-          ...(job.requirements ? job.requirements.split(".").filter(Boolean) : []),
-          ...(job.responsibilities ? job.responsibilities.split(".").filter(Boolean) : [])
-        ].slice(0, 4).map((point, index) => (
+          job.description?.split(' ').slice(0, 10).join(' ') + (job.description?.split(' ').length > 10 ? '...' : ''),
+          job.requirements?.split(' ').slice(0, 10).join(' ') + (job.requirements?.split(' ').length > 10 ? '...' : '')
+        ].filter(Boolean).map((point, index) => (
           <Text
             key={index}
-            size="sm"
-            color="dimmed"
             style={{
               display: "flex",
               alignItems: "flex-start",
               marginBottom: "4px",
-              fontWeight: "500",
+              fontFamily: "Satoshi Variable",
+              fontWeight: 500,
+              fontSize: "14px",
+              lineHeight: "100%",
+              letterSpacing: "0%",
+              color: "#999",
             }}
           >
             <span
@@ -185,10 +204,18 @@ const JobCard = ({ job }) => {
 
       <Button 
         variant="filled" 
-        fullWidth 
-        radius="md" 
-        color="blue"
-        style={{ marginTop: "auto" }}
+        color="#00AAFF"
+        style={{ 
+          width: "284px",
+          height: "46px",
+          position: "absolute",
+          top: "298px",
+          left: "16px",
+          borderRadius: "10px",
+          borderWidth: "1px",
+          padding: "12px 10px",
+          opacity: 1
+        }}
       >
         Apply Now
       </Button>

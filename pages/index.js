@@ -9,7 +9,7 @@ export default function Home() {
   const [searchTitle, setSearchTitle] = useState("");
   const [location, setLocation] = useState("");
   const [jobType, setJobType] = useState("");
-  const [salaryRange, setSalaryRange] = useState([0, 50]);
+  const [salaryRange, setSalaryRange] = useState([50, 150]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -51,22 +51,21 @@ export default function Home() {
   const filteredJobs = jobs?.filter((job) => {
     if (!job) return false;
     
-    // Extract salary number from salaryRange string
-    const salaryMatch = job.salaryRange?.match(/\d+/);
-    let salary = 0;
-    if (salaryMatch) {
-      const firstNumber = Number(salaryMatch[0]);
-      // If number is > 1000, assume it's in full amount, divide by 100000 for LPA
-      // If number is < 1000, assume it's already in thousands, divide by 10
-      salary = firstNumber > 1000 ? firstNumber / 100000 : firstNumber / 10;
+    // Extract highest salary from salaryRange string and convert to monthly
+    const salaryNumbers = job.salaryRange?.match(/\d+/g) || [];
+    let monthlysalary = 0;
+    if (salaryNumbers.length > 0) {
+      const maxAnnualSalary = Math.max(...salaryNumbers.map(Number));
+      // Convert annual salary to monthly (divide by 12) and then to thousands
+      monthlysalary = (maxAnnualSalary / 12) / 1000;
     }
     
     const matches = (
       job.title?.toLowerCase().includes(searchTitle?.toLowerCase() || "") &&
       job.location?.toLowerCase().includes(location?.toLowerCase() || "") &&
       (!jobType || job.jobType === jobType) &&
-      salary >= salaryRange[0] &&
-      salary <= salaryRange[1]
+      monthlysalary >= salaryRange[0] &&
+      monthlysalary <= salaryRange[1]
     );
     
     return matches;
@@ -90,11 +89,7 @@ export default function Home() {
   }
 
   return (
-    <Container
-      size="100%"
-      py="xl"
-      style={{ maxWidth: "none", padding: "10px" }}
-    >
+    <>
       <JobFilters
         searchTitle={searchTitle}
         setSearchTitle={setSearchTitle}
@@ -105,26 +100,32 @@ export default function Home() {
         salaryRange={salaryRange}
         setSalaryRange={setSalaryRange}
       />
-
-      <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="lg" mt="xl">
-        {filteredJobs.length > 0 ? (
-          filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
-        ) : (
-          <div
-            style={{
-              width: "100%",
-              textAlign: "center",
-              gridColumn: "1 / -1",
-              color: "#FF4444",
-              fontSize: "18px",
-              fontWeight: "500",
-              padding: "40px 0",
-            }}
-          >
-            No jobs found 😕
-          </div>
-        )}
-      </SimpleGrid>
-    </Container>
+      
+      <Container
+        size="100%"
+        py="xl"
+        style={{ maxWidth: "none", padding: "8px 48px" }}
+      >
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={120} mt="xl">
+          {filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                textAlign: "center",
+                gridColumn: "1 / -1",
+                color: "#FF4444",
+                fontSize: "18px",
+                fontWeight: "500",
+                padding: "40px 0",
+              }}
+            >
+              No jobs found 😕
+            </div>
+          )}
+        </SimpleGrid>
+      </Container>
+    </>
   );
 }
