@@ -36,7 +36,7 @@ const Header = () => {
   };
 
   const buttonStyle = {
-    background: "linear-gradient(10deg, #951e8a, #de59d4)",
+    background: "linear-gradient( #A128FF, #6100AD)",
     color: "white",
     padding: "0.8rem 1.5rem",
     border: "none",
